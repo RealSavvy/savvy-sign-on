@@ -1,9 +1,11 @@
 import { guid }  from '../utils/guid';
+import { baseUrl } from '../utils/base-url';
 
 class Popup {
   constructor(options) {
     this.state = options.state;
     this._data = null;
+    this.source = null;
   }
 
   hasData() {
@@ -28,6 +30,9 @@ class Popup {
       let popup = this;
       if(popup.hasData()){
         resolve(popup.getData())
+        if(this.source.close) {
+          this.source.close();
+        }
       }else if(popup.source.closed){
         reject(popup.source)
       }else{
@@ -47,6 +52,7 @@ export default class Base {
   constructor(options) {
     var provider = this;
     this.domain = options.domain;
+    this.allowedOrigins = options.allowedOrigins || [baseUrl().slice(0,-1)]
     this.secrets = {};
     this._state = options.state;
 
@@ -58,7 +64,7 @@ export default class Base {
 
     function handleMessages(event) {
       let secrets = provider.secrets;
-      const originMatches = !provider.domain || (event &&  event.origin == provider.domain);
+      const originMatches = provider.allowedOrigins === '*' || (event &&  provider.allowedOrigins.indexOf(event.origin) !== -1);
       let sourceMatches = true;
       if(event && event.source) {
         sourceMatches = secrets[event.data.state] && secrets[event.data.state].source == event.source;

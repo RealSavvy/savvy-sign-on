@@ -1,19 +1,5 @@
 import Provider from './base';
-
-function baseUrl() {
-  let parts = [
-    window.location.protocol, 
-    '//',
-    window.location.host
-  ];
-  let url = parts.join('');
-  if (url.substr(-1) !== '/') {
-    url += '/';
-  }
-
-  return url;
-}
-
+import { baseUrl } from '../utils/base-url';
 
 export default class ImplicitGrant extends Provider {
   constructor(options) {
@@ -27,15 +13,15 @@ export default class ImplicitGrant extends Provider {
     return {
       redirect_uri: this.redirect_uri,
       response_type: this.response_type,
-      client_id: this.client_id,
-      state: this.state
+      client_id: this.client_id
     }
   }
 
   open(options={}) {
-    let defaults = Object.assign(this.defaults, options);
+    let popup = this.popup;
+    let defaults = Object.assign({ state: popup.state }, this.defaults, options);
     const url = `${this.domain}?client_id=${defaults.client_id}&state=${defaults.state}&origin=${baseUrl()}&response_type=${defaults.response_type}&redirect_uri=${defaults.redirect_uri}`
-    return this.popup.open(Object.assign({ url: url }, defaults)).then((result) => {
+    return popup.open(Object.assign({ url: url }, defaults)).then((result) => {
       return result;
     })
   }

@@ -25,7 +25,8 @@ describe('src-entry', function() {
   });
 
   it('can be opened', function(done) {
-    var grant = new ImplictGrant({state: 'test'});
+    var grant = new ImplictGrant({state: 'test', allowedOrigins: '*'});
+    console.log('grant', grant.allowedOrigins)
     let popupWindow = { close: function() {}};
     window.open = function() { return popupWindow }
     grant.open({}).then(function(data) {

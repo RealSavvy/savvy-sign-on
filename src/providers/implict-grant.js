@@ -29,7 +29,7 @@ export default class ImplicitGrant extends Provider {
     params.append('response_type', defaults.response_type);
     params.append('redirect_uri', defaults.redirect_uri);
     if(defaults.scopes.length) {
-      params.append('scopes', defaults.scopes.join(' '));
+      params.append('scope', defaults.scopes.join(' '));
     }
     let url = `${this.domain}?${params.toString()}`
     return popup.open(Object.assign({ url: url }, defaults)).then((result) => {

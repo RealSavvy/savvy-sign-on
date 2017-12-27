@@ -64,7 +64,7 @@ describe('src-entry', function() {
 
     grant.open().catch(() => {
       console.log(openArgs.url)
-      assert.equal(openArgs.url, 'http://oauth.test?client_id=client_id&state=test-2&origin=http://node.test/&response_type=test&redirect_uri=http://node.test/oauth/callback&scopes=')
+      assert.equal(openArgs.url, 'http://oauth.test?client_id=client_id&state=test-2&origin=http%3A%2F%2Fnode.test&response_type=test&redirect_uri=http%3A%2F%2Fnode.test%2Foauth%2Fcallback&scopes=foo%20bar')
       done()
     });
 

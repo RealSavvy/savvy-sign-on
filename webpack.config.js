@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: ['url-polyfill','./src/index.js'],
   devtool: 'inline-source-map',
   module: {
     rules: [

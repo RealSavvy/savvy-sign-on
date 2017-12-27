@@ -48,7 +48,8 @@ describe('src-entry', function() {
       domain: 'http://oauth.test',
       state: 'test-2',
       client_id: 'client_id',
-      response_type: 'test'
+      response_type: 'test',
+      scopes: ['foo', 'bar']
     });
     let popupWindow = { close: function() {}};
     let openArgs = null;
@@ -62,7 +63,8 @@ describe('src-entry', function() {
     }
 
     grant.open().catch(() => {
-      assert.equal(openArgs.url, 'http://oauth.test?client_id=client_id&state=test-2&origin=http://node.test/&response_type=test&redirect_uri=http://node.test/oauth/callback')
+      console.log(openArgs.url)
+      assert.equal(openArgs.url, 'http://oauth.test?client_id=client_id&state=test-2&origin=http://node.test/&response_type=test&redirect_uri=http://node.test/oauth/callback&scopes=')
       done()
     });
 

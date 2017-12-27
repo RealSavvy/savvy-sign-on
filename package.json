@@ -4,7 +4,8 @@
   "description": "Library to manage omniauth flows via a browser popup",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha-webpack --require tests/setup.js --webpack-config webpack.config-test.js \"tests/**/*.test.js\"",
+    "test-watch": "mocha-webpack --require tests/setup.js --webpack-config webpack.config-test.js \"tests/**/*.test.js\" --watch",
     "start": "webpack --config webpack.config.js",
     "watch": "webpack --watch --config webpack.config.js"
   },
@@ -14,6 +15,12 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
-    "webpack": "^3.8.1"
+    "jsdom": "^9.9.1",
+    "mocha": "^4.0.1",
+    "mocha-loader": "^1.1.1",
+    "mocha-webpack": "^1.0.1",
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.9.7",
+    "webpack-node-externals": "^1.6.0"
   }
 }

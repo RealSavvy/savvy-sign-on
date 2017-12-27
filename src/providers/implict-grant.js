@@ -20,15 +20,22 @@ export default class ImplicitGrant extends Provider {
     super(options);
     this.redirect_uri = options.redirect_uri || `${baseUrl()}oauth/callback`
     this.response_type = options.response_type || 'token'
-    this.client_id = options.client_id;
-    this.state = options.state;
+    this.client_id = options.client_id || '';
   }
 
-  open(options) {
-    const random = this.state;
-    const popup = this.popup;
-    secrets[random] = this.popup;
-    return popup.open().then((result) => {
+  get defaults() {
+    return {
+      redirect_uri: this.redirect_uri,
+      response_type: this.response_type,
+      client_id: this.client_id,
+      state: this.state
+    }
+  }
+
+  open(options={}) {
+    let defaults = Object.assign(this.defaults, options);
+    const url = `${this.domain}?client_id=${defaults.client_id}&state=${defaults.state}&origin=${baseUrl()}&response_type=${defaults.response_type}&redirect_uri=${defaults.redirect_uri}`
+    return this.popup.open(Object.assign({ url: url }, defaults)).then((result) => {
       return result;
     })
   }

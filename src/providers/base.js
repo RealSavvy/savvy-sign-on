@@ -77,6 +77,8 @@ export default class Base {
         sourceMatches = secrets[event.data.state] && secrets[event.data.state].source == event.source;
       } else if (event && event.data.source) {
         sourceMatches = secrets[event.data.state] && secrets[event.data.state].source == event.data.source;
+      } else {
+        sourceMatches = false;
       }
       if(originMatches && sourceMatches){
         secrets[event.data.state].setData(event.data);

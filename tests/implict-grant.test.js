@@ -26,7 +26,6 @@ describe('src-entry', function() {
 
   it('can be opened', function(done) {
     var grant = new ImplictGrant({domain: 'example.com', state: 'test', allowedOrigins: '*'});
-    console.log('grant', grant.allowedOrigins)
     let popupWindow = { close: function() {}};
     window.open = function() { return popupWindow }
     grant.open({}).then(function(data) {
@@ -63,8 +62,7 @@ describe('src-entry', function() {
     }
 
     grant.open().catch(() => {
-      console.log(openArgs.url)
-      assert.equal(openArgs.url, 'http://oauth.test?client_id=client_id&state=test-2&origin=http%3A%2F%2Fnode.test&response_type=test&redirect_uri=http%3A%2F%2Fnode.test%2Foauth%2Fcallback&scopes=foo%20bar')
+      assert.equal(openArgs.url,'http://oauth.test?client_id=client_id&state=test-2&origin=http%3A%2F%2Fnode.test&response_type=test&redirect_uri=http%3A%2F%2Fnode.test%2Foauth%2Fcallback&scope=foo%20bar')
       done()
     });
 

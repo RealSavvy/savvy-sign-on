@@ -1,6 +1,6 @@
 {
   "name": "savvy-sign-on",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Library to manage omniauth flows via a browser popup",
   "main": "index.js",
   "scripts": {

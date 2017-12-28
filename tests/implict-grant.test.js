@@ -3,12 +3,12 @@ import { ImplictGrant } from '../src/index';
 
 describe('src-entry', function() {
   it('can be created', function() {
-    var grant = new ImplictGrant({});
+    var grant = new ImplictGrant({domain: 'example.com'});
     assert(grant);
   })
 
   it('can be opened and closed', function(done) {
-    var grant = new ImplictGrant({});
+    var grant = new ImplictGrant({domain: 'example.com'});
     let popupWindow = {};
     window.open = function() { return popupWindow }
     grant.open({}).then(function() {
@@ -25,7 +25,7 @@ describe('src-entry', function() {
   });
 
   it('can be opened', function(done) {
-    var grant = new ImplictGrant({state: 'test', allowedOrigins: '*'});
+    var grant = new ImplictGrant({domain: 'example.com', state: 'test', allowedOrigins: '*'});
     console.log('grant', grant.allowedOrigins)
     let popupWindow = { close: function() {}};
     window.open = function() { return popupWindow }

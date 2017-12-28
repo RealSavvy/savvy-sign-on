@@ -52,6 +52,13 @@ export default class Base {
   constructor(options) {
     var provider = this;
     this.domain = options.domain;
+    if(this.domain) {
+      if(!this.domain.startsWith('http')) {
+        this.domain = new URL(`${window.location.protocol}//${this.domain}`).toString().slice(0, -1);
+      }
+    } else {
+      throw 'missing required option: domain';
+    }
     this.allowedOrigins = options.allowedOrigins || [baseUrl().slice(0,-1)]
     this.secrets = {};
     this._state = options.state;

@@ -54,10 +54,13 @@ export default class Base {
     this.domain = options.domain;
     if(this.domain) {
       if(!this.domain.startsWith('http')) {
-        this.domain = new URL(`${window.location.protocol}//${this.domain}`).toString().slice(0, -1);
+        this.domain = new URL(`${window.location.protocol}//${this.domain}`).toString();
       }
     } else {
       throw 'missing required option: domain';
+    }
+    if(this.domain.substr(-1) === '/') {
+      this.domain = this.domain.slice(0, -1)
     }
     this.allowedOrigins = options.allowedOrigins || [baseUrl().slice(0,-1)]
     this.secrets = {};

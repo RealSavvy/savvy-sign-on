@@ -51,18 +51,16 @@ class Popup {
 export default class Base {
   constructor(options) {
     var provider = this;
-    this.domain = options.domain;
-    if(this.domain) {
-      if(!this.domain.startsWith('http')) {
-        this.domain = new URL(`${window.location.protocol}//${this.domain}`).toString();
-      }
-    } else {
-      throw 'missing required option: domain';
+
+    this.domain = cleanDomain(options.domain);
+    if(options.idxDomain){
+      this.idxDomain = cleanDomain(options.idxDomain);
     }
-    if(this.domain.substr(-1) === '/') {
-      this.domain = this.domain.slice(0, -1)
-    }
-    this.allowedOrigins = options.allowedOrigins || [baseUrl().slice(0,-1)]
+
+    this.authorize_path = cleanPath(options.authorize_path || '/oauth/authorize');
+    this.logout_path = cleanPath(options.logout_path || '/oauth_static/logout.html');
+
+    this.allowedOrigins = options.allowedOrigins || [baseUrl().slice(0,-1)];
     this.secrets = {};
     this._state = options.state;
 
@@ -86,7 +84,29 @@ export default class Base {
       if(originMatches && sourceMatches){
         secrets[event.data.state].setData(event.data);
         secrets[event.data.state].hasData(event.data);
-        secrets[event.data.state].source.close()
+        secrets[event.data.state].source.close();
+      }
+    }
+
+    function cleanPath(path) {
+      if(path.substr(-1) === '/') {
+        path = path.slice(0, -1);
+      }
+      return path;
+    }
+
+    function cleanDomain(domain){
+      if(domain) {
+        if(!domain.startsWith('http')) {
+          this.urlObject = new URL(`${window.location.protocol}//${domain}`);
+          this.urlObject.pathname = '';
+          domain = this.urlObject.toString();
+        }
+        domain = cleanPath(domain);
+
+        return domain;
+      } else {
+        throw 'missing required option: domain';
       }
     }
   }
@@ -104,4 +124,23 @@ export default class Base {
     return this._state || guid();
   }
 
+  logout(options={}) {
+    let popup = this.popup;
+    let defaults = Object.assign({ state: popup.state }, this.defaults, options);
+
+    let params = new URLSearchParams('');
+    params.append('client_id', defaults.client_id);
+    params.append('state', defaults.state);
+    let url = `${this.domain}${this.logout_path}#${params.toString()}`
+
+    if(this.idxDomain){
+      let idxParams = new URLSearchParams('');
+      idxParams.append('redirect_uri', url);
+      url = `${this.idxDomain}${this.logout_path}#${idxParams.toString()}`
+    }
+
+    return popup.open(Object.assign({ url: url }, defaults)).then((result) => {
+      return result;
+    })
+  }
 }

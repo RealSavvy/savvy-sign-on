@@ -15,7 +15,7 @@ export default class ImplicitGrant extends Provider {
       redirect_uri: this.redirect_uri,
       response_type: this.response_type,
       client_id: this.client_id,
-      scopes: this.scopes
+      scopes: this.scopes,
     }
   }
 
@@ -31,7 +31,14 @@ export default class ImplicitGrant extends Provider {
     if(defaults.scopes.length) {
       params.append('scope', defaults.scopes.join(' '));
     }
-    let url = `${this.domain}?${params.toString()}`
+    let url = `${this.domain}${this.authorize_path}?${params.toString()}`
+
+    if(this.idxDomain){
+      let idxParams = new URLSearchParams('');
+      idxParams.append('redirect_uri', url);
+      url = `${this.idxDomain}${this.authorize_path}#${idxParams.toString()}`
+    }
+
     return popup.open(Object.assign({ url: url }, defaults)).then((result) => {
       return result;
     })

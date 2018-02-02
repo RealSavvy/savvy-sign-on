@@ -98,9 +98,9 @@ export default class Base {
     function cleanDomain(domain){
       if(domain) {
         if(!domain.startsWith('http')) {
-          this.urlObject = new URL(`${window.location.protocol}//${domain}`);
-          this.urlObject.pathname = '';
-          domain = this.urlObject.toString();
+          let urlObject = new URL(`${window.location.protocol}//${domain}`);
+          urlObject.pathname = '';
+          domain = urlObject.toString();
         }
         domain = cleanPath(domain);
 
@@ -136,7 +136,7 @@ export default class Base {
     if(this.idxDomain){
       let idxParams = new URLSearchParams('');
       idxParams.append('redirect_uri', url);
-      url = `${this.idxDomain}${this.logout_path}#${idxParams.toString()}`
+      url = `${this.idxDomain}${this.logout_path}?${idxParams.toString()}`
     }
 
     return popup.open(Object.assign({ url: url }, defaults)).then((result) => {

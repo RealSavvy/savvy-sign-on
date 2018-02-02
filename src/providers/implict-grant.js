@@ -36,7 +36,7 @@ export default class ImplicitGrant extends Provider {
     if(this.idxDomain){
       let idxParams = new URLSearchParams('');
       idxParams.append('redirect_uri', url);
-      url = `${this.idxDomain}${this.authorize_path}#${idxParams.toString()}`
+      url = `${this.idxDomain}${this.authorize_path}?${idxParams.toString()}`
     }
 
     return popup.open(Object.assign({ url: url }, defaults)).then((result) => {

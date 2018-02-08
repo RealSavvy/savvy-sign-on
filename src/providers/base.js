@@ -58,7 +58,7 @@ export default class Base {
     }
 
     this.authorize_path = cleanPath(options.authorize_path || '/oauth/authorize');
-    this.logout_path = cleanPath(options.logout_path || '/oauth_static/logout.html');
+    this.logout_path = cleanPath(options.logout_path || '/oauth/logout.html');
 
     this.allowedOrigins = options.allowedOrigins || [baseUrl().slice(0,-1)];
     this.secrets = {};
@@ -131,7 +131,7 @@ export default class Base {
     let params = new URLSearchParams('');
     params.append('client_id', defaults.client_id);
     params.append('state', defaults.state);
-    let url = `${this.domain}${this.logout_path}#${params.toString()}`
+    let url = `${this.domain}${this.logout_path}?${params.toString()}`
 
     if(this.idxDomain){
       let idxParams = new URLSearchParams('');

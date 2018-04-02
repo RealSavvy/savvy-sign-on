@@ -17,6 +17,7 @@ module.exports = {
     }
     ]
   },
+  target: 'web',
   output: {
     filename: 'savvy-sign-on.js',
     path: path.resolve(__dirname, 'dist'),

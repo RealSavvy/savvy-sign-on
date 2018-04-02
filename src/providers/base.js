@@ -24,7 +24,15 @@ class Popup {
   open(options) {
     const url = options.url;
 
-    this.source = window.open(url, this.state, 'height=600,width=600');
+    const height = 600;
+    const width = 600;
+
+    const y_offset = window.top.outerHeight / 2 + window.top.screenY - ( height / 2);
+    const x_offset = window.top.outerWidth / 2 + window.top.screenX - ( width / 2);
+
+    const strWindowFeatures = `height=${height},width=${width},top=${y_offset},left=${x_offset}`;
+
+    this.source = window.open(url, this.state, strWindowFeatures);
 
     const promiseWatchPopup = function(resolve, reject){
       let popup = this;
